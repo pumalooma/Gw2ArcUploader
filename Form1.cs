@@ -17,6 +17,7 @@ namespace Gw2DpsUploader {
         private Dictionary<ListViewItem, ArcItem> mItemData = new Dictionary<ListViewItem, ArcItem>();
         private ListViewItemComparer mListViewComprarer = new ListViewItemComparer();
         private string mKeyName = @"HKEY_CURRENT_USER\SOFTWARE\Gw2ArcUploader";
+        private string mKeyNotesName = @"HKEY_CURRENT_USER\SOFTWARE\Gw2ArcUploader\Notes";
         private string mRegPath = @"SOFTWARE\Gw2ArcUploader";
         private string mArcLogFolder = @"Guild Wars 2\addons\arcdps\arcdps.cbtlogs";
         private int mSortColumn = 1;
@@ -30,6 +31,7 @@ namespace Gw2DpsUploader {
             listView.Columns.Add("Date", 100);
             listView.Columns.Add("Filesize", 70);
             listView.Columns.Add("Status", 300);
+            listView.Columns.Add("Notes", 200);
             mListViewComprarer.Init(mItemData);
         }
 
@@ -39,15 +41,7 @@ namespace Gw2DpsUploader {
             listView.ListViewItemSorter = mListViewComprarer;
         }
 
-        bool firstTime = false;
-
         private void Form1_Activated(object sender, EventArgs e) {
-           // if(!firstTime)
-           // {
-           //     firstTime = true;
-           //     return;
-           // }
-
             RefreshList();
         }
 
@@ -65,7 +59,8 @@ namespace Gw2DpsUploader {
                 var fileInfo = new FileInfo(filePath);
                 string bossName = GetBossName(fileInfo.Directory);
                 string bossNameLwr = bossName.ToLower();
-                bool included = string.IsNullOrEmpty(this.filter) || bossNameLwr.Contains(this.filter);
+                string notes = (string)Registry.GetValue(mKeyNotesName, filePath, "");
+                bool included = string.IsNullOrEmpty(this.filter) || bossNameLwr.Contains(this.filter) || notes.Contains(this.filter);
 
                 if (!included)
                     continue;
@@ -75,13 +70,15 @@ namespace Gw2DpsUploader {
                 data.mFileSize = (int)fileInfo.Length / 1024;
                 data.mFilePath = filePath;
                 data.mBossName = bossNameLwr;
+                data.mNotes = notes;
 
-                string url = (string)Registry.GetValue(mKeyName, filePath, "");
+                string url = (string)Registry.GetValue(mKeyName, filePath, "");                
 
                 var item = new ListViewItem(bossName);
                 item.SubItems.Add(data.mTimeStamp.ToString("M/d/yy h:mm tt"));
                 item.SubItems.Add(data.mFileSize.ToString() + " kb");
                 item.SubItems.Add(string.IsNullOrEmpty(url) ? "Not Uploaded" : url);
+                item.SubItems.Add(data.mNotes);
 
                 mListViewItems[filePath] = item;
                 mItemData[item] = data;
@@ -94,7 +91,7 @@ namespace Gw2DpsUploader {
                 }
                 else
                 {
-                    bool included = string.IsNullOrEmpty(this.filter) || mItemData[item].mBossName.Contains(this.filter);
+                    bool included = string.IsNullOrEmpty(this.filter) || mItemData[item].mBossName.Contains(this.filter) || mItemData[item].mNotes.Contains(this.filter);
                     if (!included)
                     {
                         RemoveItem(item);
@@ -103,6 +100,15 @@ namespace Gw2DpsUploader {
             }
 
             RegistryKey regKey = Registry.CurrentUser.OpenSubKey(mRegPath, true);
+			if(regKey != null) {
+				foreach(string regItem in regKey.GetValueNames()) {
+					if(!mListViewItems.ContainsKey(regItem)) {
+						regKey.DeleteValue(regItem);
+					}
+				}
+			}
+
+            regKey = Registry.CurrentUser.OpenSubKey(mKeyNotesName, true);
 			if(regKey != null) {
 				foreach(string regItem in regKey.GetValueNames()) {
 					if(!mListViewItems.ContainsKey(regItem)) {
@@ -378,6 +384,31 @@ namespace Gw2DpsUploader {
         private void RefreshSelectionCount()
         {
             this.lblCount.Text = string.Format("{0}/{1}", this.listView.SelectedItems.Count, this.listView.Items.Count);
+        }
+
+        private void btnEditNotes_Click(object sender, EventArgs e)
+        {
+            var selection = listView.SelectedItems;
+
+            if (selection == null || selection.Count == 0)
+                return;
+
+            var dlg = new EditNotes();
+            dlg.mNotes = mItemData[selection[0]].mNotes;
+            dlg.ShowDialog();
+
+            if(dlg.DialogResult == DialogResult.OK)
+            {
+                foreach (ListViewItem item in selection)
+                {
+                    mItemData[item].mNotes = dlg.mNotes;
+
+                    var notes = item.SubItems[4];
+                    notes.Text = dlg.mNotes;
+                    
+                    Registry.SetValue(mKeyNotesName, mItemData[item].mFilePath, dlg.mNotes);
+                }
+            }
         }
     }
 }

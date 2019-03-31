@@ -33,6 +33,7 @@ namespace Gw2DpsUploader {
             this.lblSearch = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.lblCount = new System.Windows.Forms.Label();
+            this.btnEditNotes = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView
@@ -45,7 +46,7 @@ namespace Gw2DpsUploader {
             this.listView.HideSelection = false;
             this.listView.Location = new System.Drawing.Point(12, 12);
             this.listView.Name = "listView";
-            this.listView.Size = new System.Drawing.Size(769, 403);
+            this.listView.Size = new System.Drawing.Size(832, 403);
             this.listView.TabIndex = 0;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.View = System.Windows.Forms.View.Details;
@@ -112,7 +113,7 @@ namespace Gw2DpsUploader {
             // 
             this.lblSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblSearch.AutoSize = true;
-            this.lblSearch.Location = new System.Drawing.Point(573, 427);
+            this.lblSearch.Location = new System.Drawing.Point(562, 427);
             this.lblSearch.Name = "lblSearch";
             this.lblSearch.Size = new System.Drawing.Size(44, 13);
             this.lblSearch.TabIndex = 6;
@@ -121,7 +122,7 @@ namespace Gw2DpsUploader {
             // txtSearch
             // 
             this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtSearch.Location = new System.Drawing.Point(623, 424);
+            this.txtSearch.Location = new System.Drawing.Point(612, 424);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(140, 20);
             this.txtSearch.TabIndex = 7;
@@ -131,17 +132,29 @@ namespace Gw2DpsUploader {
             // 
             this.lblCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCount.AutoSize = true;
-            this.lblCount.Location = new System.Drawing.Point(500, 426);
+            this.lblCount.Location = new System.Drawing.Point(500, 427);
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(24, 13);
             this.lblCount.TabIndex = 8;
             this.lblCount.Text = "0/0";
             // 
+            // btnEditNotes
+            // 
+            this.btnEditNotes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnEditNotes.Location = new System.Drawing.Point(769, 422);
+            this.btnEditNotes.Name = "btnEditNotes";
+            this.btnEditNotes.Size = new System.Drawing.Size(75, 23);
+            this.btnEditNotes.TabIndex = 9;
+            this.btnEditNotes.Text = "Edit Notes";
+            this.btnEditNotes.UseVisualStyleBackColor = true;
+            this.btnEditNotes.Click += new System.EventHandler(this.btnEditNotes_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(793, 456);
+            this.ClientSize = new System.Drawing.Size(856, 456);
+            this.Controls.Add(this.btnEditNotes);
             this.Controls.Add(this.lblCount);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.lblSearch);
@@ -172,6 +185,7 @@ namespace Gw2DpsUploader {
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label lblCount;
+        private System.Windows.Forms.Button btnEditNotes;
     }
 }
 

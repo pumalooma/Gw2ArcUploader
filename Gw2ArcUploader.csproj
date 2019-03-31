@@ -56,6 +56,12 @@
   <ItemGroup>
     <Compile Include="ArcItem.cs" />
     <Compile Include="DpsReportResult.cs" />
+    <Compile Include="EditNotes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditNotes.Designer.cs">
+      <DependentUpon>EditNotes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +71,9 @@
     <Compile Include="ListViewItemComparer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="EditNotes.resx">
+      <DependentUpon>EditNotes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

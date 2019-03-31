@@ -5,4 +5,5 @@ public class ArcItem {
     public string   mBossName;
     public DateTime mTimeStamp;
     public int      mFileSize;
+    public string   mNotes;
 }
